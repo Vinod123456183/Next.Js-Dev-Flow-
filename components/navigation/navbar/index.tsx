@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+import MobileNavigation from './MobileNavigation'
 import { Theme } from './Theme'
 
 function Navbar() {
@@ -9,7 +10,7 @@ function Navbar() {
     <nav className="flex-between background-light900_dark200 shadow-light-300 fixed z-50 w-full p-4 sm:px-12 dark:shadow-none">
       <Link href={'/'} className="flex items-center gap-1">
         <Image
-          src="/public/window.svg"
+          src="/images/logo.png"
           alt="DevFlow Logo"
           height={23}
           width={23}
@@ -22,6 +23,8 @@ function Navbar() {
       <p>Search</p>
       <div className="flex-between gap-5">
         <Theme />
+
+        <MobileNavigation />
       </div>
     </nav>
   )

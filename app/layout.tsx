@@ -8,9 +8,13 @@ import { cn } from '@/lib/utils'
 
 import type { Metadata } from 'next'
 
-import Navbar from '@/components/navigation/navbar'
-
 import { Geist } from 'next/font/google'
+import { Toaster } from 'sonner'
+import { SessionProvider } from 'next-auth/react'
+
+import { auth } from '@/auth'
+
+import { ReactNode } from 'react'
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -30,29 +34,31 @@ export const metadata: Metadata = {
     'A community-driven platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers from around the world. Explore topics in web development, mobile app development, algorithms, data structures, and more.',
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+  const session = await auth()
   return (
     <html
       lang="en"
       suppressHydrationWarning
       className={cn('font-sans', geist.variable)}
     >
-      <body
-        className={`${inter.variable} ${spaceGrotesk.variable}`}
-        suppressHydrationWarning
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+      <SessionProvider session={session}>
+        <body
+          className={`${inter.variable} ${spaceGrotesk.variable}`}
+          suppressHydrationWarning
         >
-          <Navbar />
-          {children}
-        </ThemeProvider>
-      </body>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+          <Toaster />
+        </body>
+      </SessionProvider>
     </html>
   )
 }
+export default RootLayout
