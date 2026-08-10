@@ -42,6 +42,13 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
       suppressHydrationWarning
       className={cn('font-sans', geist.variable)}
     >
+      <head>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+        />
+      </head>
       <SessionProvider session={session}>
         <body
           className={`${inter.variable} ${spaceGrotesk.variable}`}
