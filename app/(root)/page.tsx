@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
+import HomeFilter from '@/components/filter/HomeFilter'
 import LocalSearch from '@/components/search/LocalSearch'
 import { Button } from '@/components/ui/button'
 import ROUTES from '@/constants/routes'
@@ -67,6 +68,8 @@ async function Home({ searchParams }: SearchParams) {
           otherClasses="flex-1"
         />
       </section>
+
+      <HomeFilter />
 
       <div className="mt-10 flex w-full flex-col gap-6">
         {filteredQuestions.map((question) => (
