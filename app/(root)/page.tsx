@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
+import QuestionCard from '@/components/card/QuestionCard'
 import HomeFilter from '@/components/filter/HomeFilter'
 import LocalSearch from '@/components/search/LocalSearch'
 import { Button } from '@/components/ui/button'
@@ -15,25 +16,35 @@ const questions = [
       { _id: '1', name: 'React' },
       { _id: '2', name: 'Node' },
     ],
-    author: { _id: '1', name: 'John Doe' },
+    author: {
+      _id: '1',
+      name: 'John Doe',
+      image:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToMnHVcG4iH-QfO1FrR2HAF4mRRH9SsypThDkDXadz0Q&s=10',
+    },
     upvotes: 10,
     answers: 100,
     views: 100,
-    createdAt: new Date(),
+    createdAt: new Date('2026-08-18T21:30:00'),
   },
   {
     _id: '2',
     title: 'How to learn Java?',
-    description: 'sex?',
+    description: 'I want to learn Java, can anyone help me with this?',
     tags: [
       { _id: '1', name: 'Java' },
       { _id: '2', name: 'Programming' },
     ],
-    author: { _id: '1', name: 'John Doe' },
+    author: {
+      _id: '1',
+      name: 'John Doe',
+      image:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToMnHVcG4iH-QfO1FrR2HAF4mRRH9SsypThDkDXadz0Q&s=10',
+    },
     upvotes: 880,
     answers: 8800,
     views: 1088,
-    createdAt: new Date(),
+    createdAt: new Date('2026-08-17T15:30:00'),
   },
 ]
 
@@ -73,10 +84,7 @@ async function Home({ searchParams }: SearchParams) {
 
       <div className="mt-10 flex w-full flex-col gap-6">
         {filteredQuestions.map((question) => (
-          <div key={question._id}>
-            <h2>{question.title}</h2>
-            <p>{question.description}</p>
-          </div>
+          <QuestionCard key={question._id} question={question} />
         ))}
       </div>
     </>
