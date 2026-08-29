@@ -16,7 +16,7 @@ import { auth } from '@/auth'
 
 import { ReactNode } from 'react'
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
+const geist = Geist({subsets:['latin'],variable:'--font-sans'})
 
 const inter = localFont({
   src: './fonts/InterVF.ttf',
@@ -40,7 +40,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn('font-sans', geist.variable)}
+      className={cn('font-sans', "font-sans", geist.variable)}
     >
       <head>
         <link
