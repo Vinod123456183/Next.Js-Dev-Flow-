@@ -1,7 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
+import { useRef } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -11,13 +12,21 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-
 import { AskQuestionSchema, type AskQuestionValues } from './form-schema'
+import dynamic from 'next/dynamic'
+
+// This is the only place InitializedMDXEditor is imported directly.
+const Editor = dynamic(() => import('@/components/editor'), {
+  // Make sure we turn SSR off
+  ssr: false,
+})
 
 const QuestionForm = () => {
+  const editorRef = useRef<MDXEditorMethod>(null)
+
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -33,8 +42,10 @@ const QuestionForm = () => {
   const onSubmit = (values: AskQuestionValues) => {
     console.log(values)
 
-    // Clear the form after successful submission
     reset()
+
+    // If your Editor exposes a clear/reset method:
+    editorRef.current?.setMarkdown?.('')
   }
 
   return (
@@ -56,19 +67,23 @@ const QuestionForm = () => {
 
         {/* Content */}
         <Field data-invalid={!!errors.content}>
-          <FieldLabel htmlFor="content">Question Details</FieldLabel>
+          <FieldLabel>Question Details</FieldLabel>
 
-          <p>Editor</p>
-          <Textarea
-            id="content"
-            placeholder="Explain you'r question in detail..."
-            className="min-h-40"
-            aria-invalid={!!errors.content}
-            {...register('content')}
+          <Controller
+            name="content"
+            control={control}
+            render={({ field }) => (
+              <Editor
+                value={field.value}
+                fieldChange={field.onChange}
+                editorRef={editorRef}
+              />
+            )}
           />
 
           {errors.content && <FieldError>{errors.content.message}</FieldError>}
         </Field>
+
         {/* Tags */}
         <Field data-invalid={!!errors.tags}>
           <FieldLabel htmlFor="tags">Tags</FieldLabel>
@@ -93,8 +108,10 @@ const QuestionForm = () => {
 
           {errors.tags && <FieldError>{errors.tags.message}</FieldError>}
         </Field>
+
+        {/* Submit */}
         <Button
-          className={'primary-gradient !text-light-900 w-full p-2 px-3'}
+          className="primary-gradient !text-light-900 w-full p-2 px-3"
           type="submit"
         >
           Ask A Question
