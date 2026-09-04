@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import { useRef } from 'react'
+import dynamic from 'next/dynamic'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,11 +14,9 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { AskQuestionSchema, type AskQuestionValues } from './form-schema'
-import dynamic from 'next/dynamic'
+import TagCard from '../card/TagCard'
 
-// This is the only place InitializedMDXEditor is imported directly.
 const Editor = dynamic(() => import('@/components/editor'), {
-  // Make sure we turn SSR off
   ssr: false,
 })
 
@@ -29,6 +28,9 @@ const QuestionForm = () => {
     control,
     handleSubmit,
     reset,
+    setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<AskQuestionValues>({
     resolver: zodResolver(AskQuestionSchema),
@@ -44,8 +46,63 @@ const QuestionForm = () => {
 
     reset()
 
-    // If your Editor exposes a clear/reset method:
     editorRef.current?.setMarkdown?.('')
+  }
+
+  const handleInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    tags: string[]
+  ) => {
+    if (e.key !== 'Enter') return
+
+    e.preventDefault()
+
+    const tagInput = e.currentTarget.value.trim()
+
+    if (!tagInput) return
+
+    // Tag length validation
+    if (tagInput.length >= 15) {
+      setError('tags', {
+        type: 'manual',
+        message: 'Tags should be less than 15 characters',
+      })
+      return
+    }
+
+    // Duplicate validation
+    if (tags.includes(tagInput)) {
+      setError('tags', {
+        type: 'manual',
+        message: 'Tag already exists',
+      })
+      return
+    }
+
+    // Add tag
+    setValue('tags', [...tags, tagInput], {
+      shouldValidate: true,
+      shouldDirty: true,
+    })
+
+    // Clear input
+    e.currentTarget.value = ''
+
+    // Clear error
+    clearErrors('tags')
+  }
+
+  const handleTagRemove = (tagToRemove: string, tags: string[]) => {
+    setValue(
+      'tags',
+      tags.filter((tag) => tag !== tagToRemove),
+      {
+        shouldValidate: true,
+        shouldDirty: true,
+      }
+    )
+
+    clearErrors('tags')
   }
 
   return (
@@ -88,22 +145,36 @@ const QuestionForm = () => {
         <Field data-invalid={!!errors.tags}>
           <FieldLabel htmlFor="tags">Tags</FieldLabel>
 
-          <Input
-            id="tags"
-            placeholder="react, nextjs, typescript"
-            aria-invalid={!!errors.tags}
-            {...register('tags', {
-              setValueAs: (value) => {
-                if (Array.isArray(value)) {
-                  return value
-                }
+          <Controller
+            name="tags"
+            control={control}
+            render={({ field }) => (
+              <>
+                <Input
+                  id="tags"
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px] border"
+                  placeholder="Add tags...."
+                  onKeyDown={(e) => handleInputKeyDown(e, field.value)}
+                />
 
-                return String(value)
-                  .split(',')
-                  .map((tag) => tag.trim())
-                  .filter(Boolean)
-              },
-            })}
+                {/* Tags */}
+                {field.value.length > 0 && (
+                  <div className="mt-2.5 flex flex-wrap gap-2.5">
+                    {field.value.map((tag) => (
+                      <TagCard
+                        key={tag}
+                        _id={tag}
+                        name={tag}
+                        compact
+                        remove
+                        isButton
+                        handleRemove={() => handleTagRemove(tag, field.value)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
           />
 
           {errors.tags && <FieldError>{errors.tags.message}</FieldError>}
