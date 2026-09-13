@@ -1,4 +1,4 @@
-import { Schema, model, models, Types, HydratedDocument, Types } from 'mongoose'
+import { Schema, model, models, HydratedDocument, Types } from 'mongoose'
 
 export interface ITagQuestion {
   tag: Types.ObjectId
