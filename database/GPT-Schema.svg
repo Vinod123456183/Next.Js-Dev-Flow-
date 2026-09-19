@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1600" viewBox="0 0 2400 1600">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/></marker>
+    <marker id="mutedArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#0f172a" flood-opacity=".14"/></filter>
+    <style>
+      .bg { fill:#f8fafc; }
+      .title { font-family:Arial,sans-serif; font-size:36px; font-weight:700; fill:#0f172a; }
+      .subtitle { font-family:Arial,sans-serif; font-size:19px; fill:#475569; }
+      .edge { fill:none; stroke:#2563eb; stroke-width:4; marker-end:url(#arrow); }
+      .edge-dashed { fill:none; stroke:#64748b; stroke-width:4; stroke-dasharray:12 9; marker-end:url(#mutedArrow); }
+      .edge-label { font-family:Arial,sans-serif; font-size:18px; font-weight:700; fill:#1e40af; paint-order:stroke; stroke:#f8fafc; stroke-width:8; stroke-linejoin:round; }
+      .edge-label-muted { font-family:Arial,sans-serif; font-size:17px; font-weight:700; fill:#475569; paint-order:stroke; stroke:#f8fafc; stroke-width:8; stroke-linejoin:round; }
+      .box { fill:white; stroke:#cbd5e1; stroke-width:2; filter:url(#shadow); }
+      .head { fill:#1d4ed8; }
+      .name { font-family:Arial,sans-serif; font-size:25px; font-weight:700; fill:white; }
+      .field { font-family:Consolas,monospace; font-size:18px; fill:#1e293b; }
+      .type { fill:#64748b; }
+      .divider { stroke:#e2e8f0; stroke-width:1.5; }
+      .note { font-family:Arial,sans-serif; font-size:17px; fill:#475569; }
+      .legend { font-family:Arial,sans-serif; font-size:18px; fill:#334155; }
+    </style>
+  </defs>
+  <rect class="bg" width="2400" height="1600"/>
+  <text x="90" y="75" class="title">Stack Overflow–style app: MongoDB / Mongoose schema</text>
+  <text x="90" y="110" class="subtitle">Solid blue = explicit ObjectId reference · Dashed gray = polymorphic reference inferred from type</text>
+
+  <!-- Relationship lines, rendered first so tables remain fully legible -->
+  <path class="edge" d="M 590 450 C 660 420, 690 355, 820 355"/>
+  <text class="edge-label" x="620" y="390">userId</text>
+  <path class="edge" d="M 940 510 C 1000 420, 1200 430, 1200 355"/>
+  <text class="edge-label" x="1050" y="430">user</text>
+  <path class="edge" d="M 1635 510 C 1580 455, 1500 380, 1380 355"/>
+  <text class="edge-label" x="1490" y="420">author</text>
+  <path class="edge" d="M 1940 720 C 1890 485, 1650 330, 1380 355"/>
+  <text class="edge-label" x="1745" y="402">author</text>
+  <path class="edge" d="M 1470 1090 C 1490 860, 1520 540, 1380 355"/>
+  <text class="edge-label" x="1515" y="705">author</text>
+  <path class="edge" d="M 1840 1090 C 1910 930, 1760 470, 1380 355"/>
+  <text class="edge-label" x="1880" y="780">author</text>
+
+  <path class="edge" d="M 1240 1090 C 1370 930, 1510 760, 1650 700"/>
+  <text class="edge-label" x="1415" y="880">question</text>
+  <path class="edge" d="M 1540 1090 C 1540 1010, 1560 875, 1650 790"/>
+  <text class="edge-label" x="1580" y="960">question</text>
+  <path class="edge" d="M 2020 1090 C 1950 1050, 1840 970, 1780 890"/>
+  <text class="edge-label" x="1915" y="1000">question</text>
+  <path class="edge" d="M 2100 1290 C 2105 1325, 2125 1340, 2130 1370"/>
+  <text class="edge-label" x="2142" y="1335">tag</text>
+  <path class="edge" d="M 2040 680 C 2250 790, 2310 1120, 2200 1370"/>
+  <text class="edge-label" x="2260" y="1035">tags[]</text>
+
+  <path class="edge-dashed" d="M 940 620 C 1100 625, 1290 655, 1650 665"/>
+  <text class="edge-label-muted" x="1180" y="615">actionId when actionType = question</text>
+  <path class="edge-dashed" d="M 940 665 C 1040 805, 1080 955, 1110 1090"/>
+  <text class="edge-label-muted" x="955" y="850">actionId when actionType = answer</text>
+  <path class="edge-dashed" d="M 1940 805 C 1870 815, 1785 800, 1650 770"/>
+  <text class="edge-label-muted" x="1740" y="930">id when type = question</text>
+  <path class="edge-dashed" d="M 1940 850 C 1800 975, 1500 1040, 1240 1160"/>
+  <text class="edge-label-muted" x="1435" y="1050">id when type = answer</text>
+
+  <!-- User -->
+  <g transform="translate(980,155)"><rect class="box" width="400" height="200" rx="12"/><rect class="head" width="400" height="50" rx="12"/><rect class="head" y="38" width="400" height="12"/><text class="name" x="22" y="33">User</text>
+    <g class="field"><text x="22" y="80"><tspan class="type">ObjectId</tspan>  _id</text><text x="22" y="108"><tspan class="type">String</tspan>    name</text><text x="22" y="136"><tspan class="type">String</tspan>    username</text><text x="22" y="164"><tspan class="type">String</tspan>    email (unique)</text><text x="22" y="192"><tspan class="type">String</tspan>    bio, image, location, portfolio</text></g></g>
+
+  <!-- Account -->
+  <g transform="translate(210,450)"><rect class="box" width="380" height="270" rx="12"/><rect class="head" width="380" height="50" rx="12"/><rect class="head" y="38" width="380" height="12"/><text class="name" x="22" y="33">Account</text><g class="field"><text x="22" y="82"><tspan class="type">ObjectId</tspan>  _id</text><text x="22" y="110"><tspan class="type">ObjectId</tspan>  userId → User</text><text x="22" y="138"><tspan class="type">String</tspan>    name</text><text x="22" y="166"><tspan class="type">String?</tspan>   image, password</text><text x="22" y="194"><tspan class="type">String</tspan>    provider</text><text x="22" y="222"><tspan class="type">String</tspan>    providerAccountId</text><text x="22" y="250"><tspan class="type">Date</tspan>      createdAt, updatedAt</text></g></g>
+
+  <!-- Interaction -->
+  <g transform="translate(620,510)"><rect class="box" width="320" height="230" rx="12"/><rect class="head" width="320" height="50" rx="12"/><rect class="head" y="38" width="320" height="12"/><text class="name" x="22" y="33">Interaction</text><g class="field"><text x="22" y="82"><tspan class="type">ObjectId</tspan>  _id</text><text x="22" y="110"><tspan class="type">ObjectId</tspan>  user → User</text><text x="22" y="138"><tspan class="type">String</tspan>    action</text><text x="22" y="166"><tspan class="type">ObjectId</tspan>  actionId*</text><text x="22" y="194"><tspan class="type">Enum</tspan>      actionType*</text><text x="22" y="222"><tspan class="type">Date</tspan>      createdAt, updatedAt</text></g></g>
+
+  <!-- Question -->
+  <g transform="translate(1650,510)"><rect class="box" width="390" height="380" rx="12"/><rect class="head" width="390" height="50" rx="12"/><rect class="head" y="38" width="390" height="12"/><text class="name" x="22" y="33">Question</text><g class="field"><text x="22" y="82"><tspan class="type">ObjectId</tspan>  _id</text><text x="22" y="110"><tspan class="type">String</tspan>    title</text><text x="22" y="138"><tspan class="type">String</tspan>    content</text><text x="22" y="166"><tspan class="type">ObjectId[]</tspan> tags → Tag</text><text x="22" y="194"><tspan class="type">Number</tspan>    views</text><text x="22" y="222"><tspan class="type">Number</tspan>    upvotes</text><text x="22" y="250"><tspan class="type">Number</tspan>    downvotes</text><text x="22" y="278"><tspan class="type">Number</tspan>    answers</text><text x="22" y="306"><tspan class="type">ObjectId</tspan>  author → User</text><text x="22" y="344"><tspan class="type">Date</tspan>      createdAt, updatedAt</text></g></g>
+
+  <!-- Vote -->
+  <g transform="translate(1940,720)"><rect class="box" width="330" height="230" rx="12"/><rect class="head" width="330" height="50" rx="12"/><rect class="head" y="38" width="330" height="12"/><text class="name" x="22" y="33">Vote</text><g class="field"><text x="22" y="82"><tspan class="type">ObjectId</tspan>  _id</text><text x="22" y="110"><tspan class="type">ObjectId</tspan>  author → User</text><text x="22" y="138"><tspan class="type">ObjectId</tspan>  id*</text><text x="22" y="166"><tspan class="type">Enum</tspan>      type*</text><text x="22" y="194"><tspan class="type">Enum</tspan>      voteType</text><text x="22" y="222"><tspan class="type">Date</tspan>      createdAt, updatedAt</text></g></g>
+
+  <!-- Answer -->
+  <g transform="translate(900,1090)"><rect class="box" width="340" height="255" rx="12"/><rect class="head" width="340" height="50" rx="12"/><rect class="head" y="38" width="340" height="12"/><text class="name" x="22" y="33">Answer</text><g class="field"><text x="22" y="82"><tspan class="type">ObjectId</tspan>  _id</text><text x="22" y="110"><tspan class="type">ObjectId</tspan>  author → User</text><text x="22" y="138"><tspan class="type">ObjectId</tspan>  question → Question</text><text x="22" y="166"><tspan class="type">String</tspan>    content</text><text x="22" y="194"><tspan class="type">Number</tspan>    upvotes, downvotes</text><text x="22" y="232"><tspan class="type">Date</tspan>      createdAt, updatedAt</text></g></g>
+
+  <!-- Collection -->
+  <g transform="translate(1370,1090)"><rect class="box" width="330" height="200" rx="12"/><rect class="head" width="330" height="50" rx="12"/><rect class="head" y="38" width="330" height="12"/><text class="name" x="22" y="33">Collection</text><g class="field"><text x="22" y="82"><tspan class="type">ObjectId</tspan>  _id</text><text x="22" y="110"><tspan class="type">ObjectId</tspan>  author → User</text><text x="22" y="138"><tspan class="type">ObjectId</tspan>  question → Question</text><text x="22" y="176"><tspan class="type">Date</tspan>      createdAt, updatedAt</text></g></g>
+
+  <!-- TagQuestion -->
+  <g transform="translate(1870,1090)"><rect class="box" width="320" height="200" rx="12"/><rect class="head" width="320" height="50" rx="12"/><rect class="head" y="38" width="320" height="12"/><text class="name" x="22" y="33">TagQuestion</text><g class="field"><text x="22" y="82"><tspan class="type">ObjectId</tspan>  _id</text><text x="22" y="110"><tspan class="type">ObjectId</tspan>  tag → Tag</text><text x="22" y="138"><tspan class="type">ObjectId</tspan>  question → Question</text><text x="22" y="176"><tspan class="type">Date</tspan>      createdAt, updatedAt</text></g></g>
+
+  <!-- Tag -->
+  <g transform="translate(1990,1370)"><rect class="box" width="280" height="155" rx="12"/><rect class="head" width="280" height="50" rx="12"/><rect class="head" y="38" width="280" height="12"/><text class="name" x="22" y="33">Tag</text><g class="field"><text x="22" y="82"><tspan class="type">ObjectId</tspan>  _id</text><text x="22" y="110"><tspan class="type">String</tspan>    name (unique)</text><text x="22" y="138"><tspan class="type">Number</tspan>    questions</text></g></g>
+
+  <line x1="90" y1="1490" x2="150" y2="1490" class="edge"/><text x="165" y="1497" class="legend">explicit reference</text><line x1="400" y1="1490" x2="460" y2="1490" class="edge-dashed"/><text x="475" y="1497" class="legend">polymorphic / inferred reference</text><text x="90" y="1545" class="note">* actionId resolves to Question or Answer based on actionType; Vote.id resolves to Question or Answer based on type.</text>
+</svg>
