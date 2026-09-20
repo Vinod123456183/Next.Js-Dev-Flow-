@@ -6,6 +6,8 @@ import HomeFilter from '@/components/filter/HomeFilter'
 import LocalSearch from '@/components/search/LocalSearch'
 import { Button } from '@/components/ui/button'
 import ROUTES from '@/constants/routes'
+import handleError from '@/lib/handlers/error'
+import { NotFoundError } from '@/lib/http-errors'
 
 const questions = [
   {
@@ -48,6 +50,14 @@ const questions = [
   },
 ]
 
+const test = async () => {
+  try {
+    throw new NotFoundError('Test Error')
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
 interface SearchParams {
   searchParams: Promise<{
     query?: string
@@ -55,6 +65,9 @@ interface SearchParams {
 }
 
 async function Home({ searchParams }: SearchParams) {
+  const result = await test()
+  console.log(result)
+
   const { query = '' } = await searchParams
 
   const filteredQuestions = questions.filter((question) =>
