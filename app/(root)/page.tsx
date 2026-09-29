@@ -6,6 +6,11 @@ import HomeFilter from '@/components/filter/HomeFilter'
 import LocalSearch from '@/components/search/LocalSearch'
 import { Button } from '@/components/ui/button'
 import ROUTES from '@/constants/routes'
+import handleError from '@/lib/handlers/error'
+import dbConnect from '@/lib/mongoose'
+import logger from '@/lib/logger'
+
+logger.info('🔥🔥🔥 Pino TEST is working!')
 
 const questions = [
   {
@@ -48,6 +53,14 @@ const questions = [
   },
 ]
 
+const test = async () => {
+  try {
+    await dbConnect()
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
 interface SearchParams {
   searchParams: Promise<{
     query?: string
@@ -55,6 +68,7 @@ interface SearchParams {
 }
 
 async function Home({ searchParams }: SearchParams) {
+  const result = await test()
   const { query = '' } = await searchParams
 
   const filteredQuestions = questions.filter((question) =>

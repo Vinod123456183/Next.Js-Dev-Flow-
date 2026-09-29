@@ -1,6 +1,7 @@
 import mongoose, { Mongoose } from 'mongoose'
+import logger from './logger'
 
-const MONGODB_URI = process.env.MONGODB_URI as string
+const MONGODB_URI = process.env.MONGODB_URI
 
 if (!MONGODB_URI) {
   throw new Error('MONGODB_URI is not defined')
@@ -25,28 +26,33 @@ if (!cached) {
 }
 
 const dbConnect = async (): Promise<Mongoose> => {
+  logger.info('🔥 dbConnect() CALLED')
+
   if (cached?.conn) {
+    logger.info('🟢 Using existing MongoDB connection')
     return cached.conn
   }
 
   if (!cached?.promise) {
-    cached!.promise = mongoose
+    logger.info('🟡 Connecting to MongoDB...')
+
+    cached.promise = mongoose
       .connect(MONGODB_URI, {
         dbName: 'devflow',
       })
       .then((result) => {
-        console.log('Connected To MongoDB')
+        logger.info('🟢  Connected to MongoDB successfully')
         return result
       })
       .catch((error) => {
-        console.error('Error Connecting To MongoDB:', error)
+        logger.error({ err: error }, '🔴 MongoDB connection failed')
         throw error
       })
   }
 
-  cached!.conn = await cached!.promise
+  cached.conn = await cached.promise
 
-  return cached!.conn
+  return cached.conn
 }
 
 export default dbConnect
