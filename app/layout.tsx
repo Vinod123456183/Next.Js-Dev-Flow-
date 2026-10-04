@@ -1,6 +1,6 @@
 import localFont from 'next/font/local'
 
-import { ThemeProvider } from '@/context/Theme'
+import { ThemeProvider } from '@/lib/context/Theme'
 
 import './globals.css'
 
