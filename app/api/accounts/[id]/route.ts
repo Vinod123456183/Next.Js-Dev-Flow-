@@ -8,7 +8,7 @@ import { AccountSchema } from '@/lib/validations'
 import { APIErrorResponse } from '@/types/global'
 
 // GET /api/users/[id]
-export async function GET(
+export async function GET(``
   _: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {

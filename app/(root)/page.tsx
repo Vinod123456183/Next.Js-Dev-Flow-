@@ -9,6 +9,7 @@ import ROUTES from '@/constants/routes'
 import handleError from '@/lib/handlers/error'
 import dbConnect from '@/lib/mongoose'
 import logger from '@/lib/logger'
+import { api } from '@/lib/api'
 
 logger.info('🔥🔥🔥 Pino TEST is working!')
 
@@ -55,7 +56,8 @@ const questions = [
 
 const test = async () => {
   try {
-    await dbConnect()
+    // await dbConnect()
+    return await api.users.getAll()
   } catch (error) {
     return handleError(error)
   }
@@ -68,7 +70,10 @@ interface SearchParams {
 }
 
 async function Home({ searchParams }: SearchParams) {
-  const result = await test()
+  // const result = await test()
+  const users = await test()
+  console.log(users)
+
   const { query = '' } = await searchParams
 
   const filteredQuestions = questions.filter((question) =>
