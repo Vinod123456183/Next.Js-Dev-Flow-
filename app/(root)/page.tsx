@@ -10,6 +10,7 @@ import handleError from '@/lib/handlers/error'
 import dbConnect from '@/lib/mongoose'
 import logger from '@/lib/logger'
 import { api } from '@/lib/api'
+import { auth } from '@/auth'
 
 logger.info('🔥🔥🔥 Pino TEST is working!')
 
@@ -71,8 +72,11 @@ interface SearchParams {
 
 async function Home({ searchParams }: SearchParams) {
   // const result = await test()
-  const users = await test()
-  console.log(users)
+  // const users = await test()
+  // console.log(users)
+
+  const session = await auth()
+  console.log(session)
 
   const { query = '' } = await searchParams
 

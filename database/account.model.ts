@@ -10,6 +10,7 @@ export interface IAccount {
   createdAt?: Date
   updatedAt?: Date
 }
+export interface IAccountDoc extends IAccount, Document {}
 
 const AccountSchema = new Schema<IAccount>(
   {
